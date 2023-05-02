@@ -130,17 +130,24 @@ const Trans = () => {
 
     }
 
-    
-    function localData() {
-        let allData = JSON.parse(localStorage.getItem('Data') || '[]');
-        // let img ={...formData,receipt:'base64'}
-        let data = formData;
-        data.push({t_id:t});
-        allData.push(data);
-        localStorage.setItem('Data', JSON.stringify(allData));
-            
-    }
 
+    function storelocalData() {
+        
+
+        let allData = JSON.parse(localStorage.getItem('Data') || '[]');
+          // allData.push(data);
+          if(allData.length==0){
+              allData.push({...formData,t_id:1 });
+              localStorage.setItem('Data', JSON.stringify(allData));
+          }
+          else{
+            let prevID=allData[allData.length-1]['t_id'];
+            allData.push({...formData,t_id:prevID+1 });
+            localStorage.setItem('Data', JSON.stringify(allData));
+          }
+        // console.log('t is',t);
+
+    }
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -149,7 +156,7 @@ const Trans = () => {
 
         if (isvalid) {
             alert('data submitted...');
-            localData();
+            storelocalData();
             navigate('/transaction');
         }
 

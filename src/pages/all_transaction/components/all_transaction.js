@@ -12,7 +12,7 @@ function AllTransaction() {
     const [selectedCategory, setSelectedCategory] = useState('none');
     const [groupedData, setGroupedData] = useState({});
     const [currentPage,setCurrentPage]=useState(1);
-    const [itemPerPage,setItemPerPage]=useState(3);
+    const [itemPerPage,setItemPerPage]=useState(2);
 
     const startIndex=(currentPage-1)*itemPerPage;
     const endIndex=startIndex+itemPerPage;
@@ -139,8 +139,8 @@ console.log(currentPage);
                                     <td>{Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(e.amount)}</td>
                                     <td> <img src={e.receipt} height='50px' width='50px' /> </td>
                                     <td>{e.notes}</td>
-                                    <td> <Link to={`/edit/${index}`}>Edit</Link></td>
-                                    <td> <Link to={`/transaction/${index}`}>view</Link></td>
+                                    <td> <Link to={`/edit/${e.t_id}`}>Edit</Link></td>
+                                    <td> <Link to={`/transaction/${e.t_id}`}>view</Link></td>
                                 </tr>
                             ))}
                             </>

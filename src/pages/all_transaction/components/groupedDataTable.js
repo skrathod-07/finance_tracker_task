@@ -26,7 +26,8 @@ function GroupedDataTable({ groupedData }) {
                                     <td>{Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(item.amount)}</td>
                                     <td> <img src={item.receipt} height='50px' width='50px' /> </td>
                                     <td>{item.notes}</td>
-                                    <td> <Link to={`/transaction/${index}`}>view</Link></td>
+                                    <td> <Link to={`/edit/${item.t_id}`}>Edit</Link></td>
+                                    <td> <Link to={`/transaction/${item.t_id}`}>view</Link></td>
                                 </>
                             </tr>
                         ))
