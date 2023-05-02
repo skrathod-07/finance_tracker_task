@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 
-
 function ViewTransaction() {
     const {id} = useParams();
     console.log(id);
@@ -20,9 +19,9 @@ function ViewTransaction() {
                     <div>Amount: {Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(allData[id].amount)}</div>
 
                     <div>Receipt:
-                        <div className="card">
-                            <img src={allData[id].receipt} width='200px' height='200px'  />
-                            </div>
+                    <div>
+                        <img src={allData[id].receipt} width='150px' height='150px'  />
+                    </div>
                     </div>
                     <div>Notes: {allData[id].notes}</div>
                     </div>

@@ -1,13 +1,22 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import GroupedDataTable from "./groupedDataTable";
+import Pagination from "./pagination";
 function AllTransaction() {
     const data = localStorage.getItem('Data');
     let allData = JSON.parse(data);
 
     const [tableData, setTabledata] = useState(allData);
     const [order, setOrder] = useState('asc');
+    const [selectedCategory, setSelectedCategory] = useState('none');
+    const [groupedData, setGroupedData] = useState({});
+    const [currentPage,setCurrentPage]=useState(1);
+    const [itemPerPage,setItemPerPage]=useState(3);
 
+    const startIndex=(currentPage-1)*itemPerPage;
+    const endIndex=startIndex+itemPerPage;
+    
     const sortData = (sortby) => {
 
         if (order === 'asc') {
@@ -24,13 +33,13 @@ function AllTransaction() {
             );
 
             setTabledata(sortedData);
-            setOrder('none');
-        }
-
-        if (order === 'none') {
-            setTabledata(allData);
             setOrder('asc');
         }
+
+        // if (order === 'none') {
+        //     setTabledata(dataDisplay);
+        //     setOrder('asc');
+        // }
 
 
     }
@@ -58,18 +67,50 @@ function AllTransaction() {
         }
     }
 
+
+    const groupBy = (array, property) => {
+        return array.reduce((acc, item) => {
+            const key = item[property];
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+            acc[key].push(item);
+
+            return acc;
+        }, {});
+
+    }
+    const handleCategoryChange = (e) => {
+
+        console.log(e.target.value);
+        const category = e.target.value;
+        setSelectedCategory(category);
+        const dataArr = [...allData];
+        const groupedBData = groupBy(dataArr, category);
+        setGroupedData(groupedBData);
+
+    }
+
+    const handlePageChange=(pageNumber)=>{
+        setCurrentPage(pageNumber);
+        // setTabledata(dataDisplay);
+    }
+    let dataDisplay=tableData.slice(startIndex,endIndex);
+    
+console.log(currentPage);
+
     return (
         <div className="container">
             <h1>All Transaction</h1>
             <div>
                 <div>
-                    <label>Grroup By:</label>
-                    <select>
-                        <option>none</option>
-                        <option>Month Year</option>
-                        <option>Transaction Type</option>
-                        <option>From Account</option>
-                        <option>To Account</option>
+                    <label>Group By:</label>
+                    <select onChange={handleCategoryChange}>
+                        <option value='none'>none</option>
+                        <option value='month_year'>Month Year</option>
+                        <option value='transaction_type'>Transaction Type</option>
+                        <option value='from_acc'>From Account</option>
+                        <option value='to_acc'>To Account</option>
                     </select>
 
                 </div><br />
@@ -84,23 +125,30 @@ function AllTransaction() {
                         <th >Receipt</th>
                         <th onClick={() => sortData('notes')}>Notes</th>
                         <th >Action</th>
-                    </tr>
+                    </tr><>
+                        {(selectedCategory == 'none') ?
 
-                    {tableData.map((e, index) => (
+                            <>{dataDisplay.map((e, index) => (
 
-                        <tr key={index} >
-                            <td>{e.date}</td>
-                            <td>{e.month_year}</td>
-                            <td>{e.transaction_type}</td>
-                            <td>{e.from_acc}</td>
-                            <td>{e.to_acc}</td>
-                            <td>{Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(e.amount)}</td>
-                            <td> <img src={e.receipt} height='50px' width='50px'/> </td>
-                            <td>{e.notes}</td>
-                            <td> <Link to={`/transaction/${index}`}>view</Link></td>
-                        </tr>
-                    ))}
+                                <tr key={index} >
+                                    <td>{e.date}</td>
+                                    <td>{e.month_year}</td>
+                                    <td>{e.transaction_type}</td>
+                                    <td>{e.from_acc}</td>
+                                    <td>{e.to_acc}</td>
+                                    <td>{Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(e.amount)}</td>
+                                    <td> <img src={e.receipt} height='50px' width='50px' /> </td>
+                                    <td>{e.notes}</td>
+                                    <td> <Link to={`/edit/${index}`}>Edit</Link></td>
+                                    <td> <Link to={`/transaction/${index}`}>view</Link></td>
+                                </tr>
+                            ))}
+                            </>
+                            : <GroupedDataTable groupedData={groupedData} />}</>
+                            
                 </table>
+                <Pagination itemPerPage={itemPerPage} totalItems={tableData.length} onPageChange={handlePageChange} />
+
             </div>
         </div>
     )

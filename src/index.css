@@ -1,13 +1,4 @@
-form{
-    margin: 20px ;
-    padding: 10px ; 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
-}
+
 
 form div{
     margin: 5px;
@@ -29,24 +20,51 @@ form span{
 .card{
 
     border: 1px solid gray;
-    /* width: 50%; */
-    margin:60px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 30px;
+    /* width: 550px; */
+    margin:50px;
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* flex-direction: column; */
+    padding: 50px;
     font-weight: bold;
     font-size: larger;
     background-color: antiquewhite;
 }
 
 .card div{
-    margin: 10px;
+    margin: 5px;
 }
 
 table{
     background-color: antiquewhite;
     border: 1px solid;
+}
+
+ul{
+    margin-top: 20px;
+    padding: 0;
+    display: flex;
+}
+ul li {
+    list-style: none;
+    margin: 0 5px;
+}
+ul a{
+
+    text-decoration: none;
+    color:black;
+    list-style: none;
+    border: 1px solid green;
+    padding: 5px;
+}
+.btn{
+    border: 15px soldi red;
+    background-color: aqua;
+
+}
+
+.dltImg{
+    cursor: pointer;
 }

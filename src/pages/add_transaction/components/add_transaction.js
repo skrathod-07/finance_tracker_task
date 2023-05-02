@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-
 const month = [
     { 'value': 'jan 2023' }, { 'value': 'feb 2023' }, { 'value': 'march 2023' }, { 'value': 'apr 2023' }, { 'value': 'may 2023' },
     { 'value': 'june 2023' }, { 'value': 'july 2023' }, { 'value': 'aug 2023' }, { 'value': 'sept 2023' }, { 'value': 'oct 2023' },
@@ -16,6 +15,7 @@ const transType = [{ 'type': 'Home Expense' }, { 'type': 'Personal Expense' }, {
 
 const Trans = () => {
     const [formData, setFormData] = useState({
+        t_id:'',
         date: '',
         month_year: '',
         transaction_type: '',
@@ -34,7 +34,7 @@ const Trans = () => {
         ))
 
     }
-    
+
     const checkFile = (e) => {
         let file = e.target.files[0];
         let filename = e.target.files[0].name;
@@ -42,9 +42,9 @@ const Trans = () => {
         let fileSize = file.size / 1024;
         let allowedTypes = ['jpg', 'jpeg', 'png']
 
-        let imgData=new FileReader();
-        imgData.addEventListener('load',()=>{
-            setFormData({...formData,receipt:imgData.result})
+        let imgData = new FileReader();
+        imgData.addEventListener('load', () => {
+            setFormData({ ...formData, receipt: imgData.result })
         })
         imgData.readAsDataURL(e.target.files[0]);
 
@@ -62,7 +62,7 @@ const Trans = () => {
         }
     }
 
-    
+
     const validate = (e) => {
         
         let date = e.target.date;
@@ -77,40 +77,40 @@ const Trans = () => {
         if (date.value == '') {
             console.log('enter date');
             errors.date = 'please select date'
-         
+
         }
 
         else if (month.value == '') {
             console.log('plese select month');
             errors.month = 'plese select month'
-        
+
         }
         else if (trans.value == '') {
             console.log('select transaction type');
             errors.trans = 'please select transaction type'
-         
+
         }
         else if (from_acc.value == '') {
             console.log('select from_acc ');
             errors.fromAcc = 'select from acc';
-           
+
         } else if (to_acc.value == '') {
             console.log('select to_acc ');
             errors.toAcc = 'select from acc';
-            
+
         } else if (from_acc.value == to_acc.value) {
             console.log('from acc and to acc must be different');
             errors.toAcc = 'from acc and to acc must be different';
-         
+
         } else if (amount.value == '') {
             console.log('enter amount');
             errors.amount = 'enter amount';
-      
+
         }
         else if (receipt.value == '') {
             console.log('plese select file');
             errors.receipt = 'please select file';
-           
+
 
         }
         else if (notes.value == '') {
@@ -123,18 +123,22 @@ const Trans = () => {
             errors.notes = 'enter less than 250 characters';
         }
 
-        
+        else {
+            return true;
+        }
         setErrors({ ...errors })
 
     }
 
+    
     function localData() {
         let allData = JSON.parse(localStorage.getItem('Data') || '[]');
         // let img ={...formData,receipt:'base64'}
         let data = formData;
+        data.push({t_id:t});
         allData.push(data);
         localStorage.setItem('Data', JSON.stringify(allData));
-
+            
     }
 
     const navigate = useNavigate();
@@ -153,8 +157,8 @@ const Trans = () => {
 
     return (
 
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className="container ">
+            <form onSubmit={handleSubmit} className="card">
                 <h1>Transaction Form</h1>
                 <div>
                     <label>Transaction Date:</label>
