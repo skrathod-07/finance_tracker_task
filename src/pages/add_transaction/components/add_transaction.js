@@ -23,7 +23,8 @@ const Trans = () => {
         to_acc: '',
         amount: '',
         notes: '',
-        receipt: ''
+        receipt: '',
+        user_id:''
     });
 
     const [errors, setErrors] = useState({});
@@ -148,6 +149,7 @@ const Trans = () => {
         // console.log('t is',t);
 
     }
+
     const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();

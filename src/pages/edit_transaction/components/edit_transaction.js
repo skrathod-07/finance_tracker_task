@@ -13,7 +13,6 @@ const acc = [{ 'type': 'Personal Account' }, { 'type': 'Real Living' }, { 'type'
 
 const transType = [{ 'type': 'Home Expense' }, { 'type': 'Personal Expense' }, { 'type': 'Income' }]
 
-
 function EditTransaction() {
     const { id } = useParams();
 
@@ -62,7 +61,7 @@ function EditTransaction() {
             console.log('please upload jpg,jpeg or png files only..');
 
             errors.receipt = 'please upload jpg,jpeg or png files only..'
-            
+
             setErrors(errors);
 
             return false;
@@ -92,7 +91,7 @@ function EditTransaction() {
         let to_acc = e.target.to_acc;
         let amount = e.target.amount;
         let notes = e.target.notes;
-        let receipt = e.target.receipt;
+        // let receipt = e.target.receipt;
 
         if (from_acc.value == to_acc.value) {
             console.log('from acc and to acc must be different');

@@ -14,8 +14,6 @@ function Pagination({itemPerPage,totalItems,onPageChange}){
         onPageChange(pageNumber);
     }
 
-    
-
     return(
 
         <div className="container">

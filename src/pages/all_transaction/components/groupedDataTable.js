@@ -1,22 +1,105 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 function GroupedDataTable({ groupedData }) {
+    const data = localStorage.getItem('Data');
+    let allData = JSON.parse(data);
 
-    console.log(groupedData, "groupedData    `")
-    console.log(Object.entries(groupedData), "Object.entries(groupedData)");
+    const [tableData, setTabledata] = useState(allData);
+    const [order, setOrder] = useState('asc');
+    const [gData,setGdata]=useState(groupedData);
 
+    
+    const sortData = (sortby) => {
+
+        if (order === 'asc') {
+            const sortedData = [...tableData].sort((a, b) =>
+                a[sortby].toLowerCase() > b[sortby].toLowerCase() ? 1 : -1
+            );
+
+            setTabledata(sortedData);
+            setOrder('dsc');
+        }
+        if (order === 'dsc') {
+            const sortedData = [...tableData].sort((a, b) =>
+                a[sortby].toLowerCase() < b[sortby].toLowerCase() ? 1 : -1
+            );
+
+            setTabledata(sortedData);
+            setOrder('none');
+        }
+
+        if (order === 'none') {
+            setTabledata(allData);
+            setOrder('asc');
+        }
+
+    }
+
+    const sortNum = (e) => {
+        if (order == 'asc') {
+
+            const sortedData = [...tableData].sort((a, b) => a[e] - b[e]
+            );
+
+            setTabledata(sortedData);
+            setOrder('dsc');
+        }
+        if (order == 'dsc') {
+
+            const sortedData = [...tableData].sort((a, b) => b[e] - a[e]
+            );
+
+            setTabledata(sortedData);
+            setOrder('none');
+        }
+        if (order === 'none') {
+            setTabledata(allData);
+            setOrder('asc');
+        }
+    }
+
+    const handleSearch = (e) => {
+    
+    const value = e.target.value;
+    console.log(value);
+    let arr = [...allData];
+    if (value !== "") {
+      let d = arr.filter((item) =>
+        Object.values(item).some((data) =>
+          data.toString().toLowerCase().includes(value.toLowerCase())
+        )
+      );
+      setTabledata(d);
+    } else {
+      setTabledata(allData);
+    }
+  };
     return (
 
         <tbody>
             {Object.entries(groupedData).map(([category, items], i) => (
                 <Fragment key={i}>
-                
-                    <tr><th>{category}</th></tr>
 
+                    <br /> <tr className="btn"><th>{category}</th></tr><br />
+                    
+                    <tr key={category} >
+                        <th onClick={() => sortData('date')}>Transaction Date</th>
+                        <th onClick={() => sortData('month_year')}>Month Year</th>
+                        <th onClick={() => sortData('transaction_type')}>Transaction type</th>
+                        <th onClick={() => sortData('from_acc')}>From Account</th>
+                        <th onClick={() => sortData('to_acc')}>To Account</th>
+                        <th onClick={() => sortNum('amount')}>Amount</th>
+                        <th >Receipt</th>
+                        <th onClick={() => sortData('notes')}>Notes</th>
+                        <th >Action</th>
+                    </tr>
+                    
                     {
                         items.map((item, index) => (
+
                             <tr key={index} >
+
                                 <>
                                     <td>{item.date}</td>
                                     <td>{item.month_year}</td>
